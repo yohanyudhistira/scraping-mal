@@ -1,16 +1,20 @@
 import grequests
 from bs4 import BeautifulSoup
 import pandas as pd
+
+
 def get_urls():
     urls = []
     for x in range(0, 200, 50):
         urls.append(f'https://myanimelist.net/topanime.php?limit={x}')
     return urls
 
+
 def get_data(urls):
     reqs = [grequests.get(link) for link in urls]
     resp = grequests.map(reqs)
     return resp
+
 
 def parse_data(resp):
     top_anime_list = []
@@ -19,13 +23,13 @@ def parse_data(resp):
         items = soup.find_all('tr', {'class': 'ranking-list'})
         for item in items:
             anime = {
-            'title': item.find('div', {'class': 'di-ib clearfix'}).find('h3', {'class': 'hoverinfo_trigger fl-l fs14 fw-b anime_ranking_h3'}).text.strip(),
-            'details': item.find('div', {'class': 'information di-ib mt4'}).text.strip().replace('\n', ''),
-            'rating': item.find('div', {'class': 'js-top-ranking-score-col di-ib al'}).text.strip()
+                'title': item.find('div', {'class': 'di-ib clearfix'}).find('h3', {'class': 'hoverinfo_trigger fl-l fs14 fw-b anime_ranking_h3'}).text.strip(),
+                'details': item.find('div', {'class': 'information di-ib mt4'}).text.strip().replace('\n', ''),
+                'rating': item.find('div', {'class': 'js-top-ranking-score-col di-ib al'}).text.strip()
             }
             top_anime_list.append(anime)
             print('Added', anime)
-    return  top_anime_list
+    return top_anime_list
 
 
 urls = get_urls()
@@ -33,10 +37,3 @@ resp = get_data(urls)
 df = pd.DataFrame(parse_data(resp))
 print(df.head())
 df.to_csv('top-anime.csv', index=False)
-
-
-
-
-
-
-

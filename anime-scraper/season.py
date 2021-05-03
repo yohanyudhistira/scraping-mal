@@ -4,6 +4,7 @@ import pandas as pd
 
 seasonal_anime_list = []
 
+
 def extract():
     year = input('Input airing year :')
     season = input('Input airing season :')
@@ -11,6 +12,7 @@ def extract():
     r = requests.get(url)
     soup = BeautifulSoup(r.text, 'lxml')
     return soup.find_all('div', {'class': 'seasonal-anime js-seasonal-anime'})
+
 
 def transform(items):
     for item in items:
@@ -33,9 +35,11 @@ def transform(items):
         seasonal_anime_list.append(seasonal_anime)
     return
 
+
 def load():
     df = pd.DataFrame(seasonal_anime_list)
     df.to_csv('seasonal-anime.csv', index=False)
+
 
 items = extract()
 transform(items)

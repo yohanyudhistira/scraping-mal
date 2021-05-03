@@ -3,16 +3,19 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import glob
 
+
 def get_urls():
     urls = []
     for x in range(0, 200, 50):
         urls.append(f'https://myanimelist.net/topanime.php?type=upcoming&limit={x}')
     return urls
 
+
 def get_data(urls):
     reqs = [grequests.get(link) for link in urls]
     resp = grequests.map(reqs)
     return resp
+
 
 def parse_data(resp):
     top_upcoming_anime_list = []
@@ -32,6 +35,7 @@ def parse_data(resp):
             top_upcoming_anime_list.append(top_upcoming_anime)
             print('Added', top_upcoming_anime)
     return top_upcoming_anime_list
+
 
 urls = get_urls()
 resp = get_data(urls)

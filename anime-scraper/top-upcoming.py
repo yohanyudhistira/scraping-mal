@@ -1,7 +1,6 @@
 import grequests
 from bs4 import BeautifulSoup
 import pandas as pd
-import glob
 
 
 def get_urls():
@@ -41,4 +40,5 @@ urls = get_urls()
 resp = get_data(urls)
 df = pd.DataFrame(parse_data(resp))
 print(df.head())
-df.to_csv('top-upcoming-anime.csv', index=False)
+csv_file = df.to_csv('top-upcoming-anime.csv', index=False)
+return csv_file

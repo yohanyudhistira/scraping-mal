@@ -1,7 +1,6 @@
 import grequests
 from bs4 import BeautifulSoup
 import pandas as pd
-import glob
 
 
 def get_urls():
